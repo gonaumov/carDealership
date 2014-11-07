@@ -2,6 +2,7 @@
 
 var carDealerShipApp = angular.module('carDealerShipApp', [
     'ngRoute',
+    'ngAnimate',
     'carDealerShipAppControllers'
 ]);
 
