@@ -28,8 +28,8 @@ carDealerShipAppControllers.controller('ContactCtrl', ['$scope',
         $scope.name = 'ContactCtrl';
     }]);
 
-carDealerShipAppControllers.controller('AdministrationCtrl', ['$scope',
-    function ($scope) {
+carDealerShipAppControllers.controller('AdministrationCtrl', ['$scope', 'Car',
+    function ($scope, Car) {
         $scope.name = 'AdministrationCtrl';
 
         /**
@@ -38,6 +38,8 @@ carDealerShipAppControllers.controller('AdministrationCtrl', ['$scope',
          * trough $resource
          */
         $scope.addCar = function() {
-
+            var newCar = new Car();
+            newCar.manufacturer = $scope.manufacturer;
+            newCar.$save();
         };
     }]);

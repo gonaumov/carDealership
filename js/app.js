@@ -4,7 +4,8 @@ var carDealerShipApp = angular.module('carDealerShipApp', [
     'ngRoute',
     'ngAnimate',
     'ui.bootstrap',
-    'carDealerShipAppControllers'
+    'carDealerShipAppControllers',
+    'carDealerShipAppServices'
 ]);
 
 carDealerShipApp.config(['$routeProvider',
