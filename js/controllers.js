@@ -13,9 +13,25 @@ carDealerShipAppControllers.controller('HomeCtrl', ['$scope',
     }]);
 
 
-carDealerShipAppControllers.controller('AvailableCarsCtrl', ['$scope',
-    function ($scope) {
+carDealerShipAppControllers.controller('AvailableCarsCtrl', ['$scope', 'Car',
+    function ($scope, Car) {
         $scope.name = 'AvailableCarsCtrl';
+
+        function showCarsList() {
+            Car.query().$promise.then(function (carList) {
+                $scope.carlist = carList;
+            });
+        }
+
+        showCarsList();
+
+        $scope.removeCar = function (carId) {
+            Car.delete({id: carId}).$promise.then(
+                function () {
+                    showCarsList();
+                }
+            );
+        }
     }]);
 
 carDealerShipAppControllers.controller('ServicesCtrl', ['$scope',
@@ -28,8 +44,8 @@ carDealerShipAppControllers.controller('ContactCtrl', ['$scope',
         $scope.name = 'ContactCtrl';
     }]);
 
-carDealerShipAppControllers.controller('AdministrationCtrl', ['$scope', 'Car',
-    function ($scope, Car) {
+carDealerShipAppControllers.controller('AdministrationCtrl', ['$scope', 'Car', '$modal',
+    function ($scope, Car, $modal) {
         $scope.name = 'AdministrationCtrl';
 
         /**
@@ -37,9 +53,24 @@ carDealerShipAppControllers.controller('AdministrationCtrl', ['$scope', 'Car',
          * add new car into localStorage
          * trough $resource
          */
-        $scope.addCar = function() {
+        $scope.addCar = function () {
+            var resultModalCtrl = function ($scope, $modalInstance) {
+                $scope.ok = function () {
+                    $modalInstance.close();
+                };
+            };
+
             var newCar = new Car();
             newCar.manufacturer = $scope.manufacturer;
-            newCar.$save();
+            newCar.$save().then(function (result) {
+                $modal.open({
+                    templateUrl: 'partials/modalSuccessContent.html',
+                    controller: resultModalCtrl,
+                    size: 'sm'
+                }).result.then(function() {
+                        delete $scope.manufacturer;
+                        resultModalCtrl = null;
+                    });
+            });
         };
     }]);

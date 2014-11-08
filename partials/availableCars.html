@@ -1,1 +1,26 @@
-Content of available cars
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <td>
+                Car manufacturer
+            </td>
+            <td>
+
+            </td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr data-ng-repeat="car in carlist">
+            <td>
+                {{car.manufacturer}}
+            </td>
+            <td>
+                <a href="javascript:void 0;" data-ng-click="removeCar(car.id)">
+                    <span class="glyphicon glyphicon-remove">
+
+                    </span>
+                </a>
+            </td>
+        </tr>
+    </tbody>
+</table>

@@ -34,7 +34,7 @@
         localStorage[mappingUrl] = JSON.stringify(json);
       }
 
-      var idRe = new RegExp(mappingUrl + '/?' + '([\\w-]+)/?');
+      var idRe = new RegExp(mappingUrl + '\\?id=([0-9]+)');
 
       // get all
       $httpBackend.whenGET(mappingUrl).respond(function(method, url, data, headers) {
@@ -76,7 +76,6 @@
       // remove an item
       $httpBackend.whenDELETE(idRe).respond(function(method, url, data, headers) {
         var id = idRe.exec(url)[1];
-
         var instance = _.findWhere(json, {id: id});
         if (!instance) {
           instance = _.findWhere(json, {id: parseInt(id, 10)});
