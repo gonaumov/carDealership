@@ -31,4 +31,13 @@ carDealerShipAppControllers.controller('ContactCtrl', ['$scope',
 carDealerShipAppControllers.controller('AdministrationCtrl', ['$scope',
     function ($scope) {
         $scope.name = 'AdministrationCtrl';
+
+        /**
+         * In this mettod we will
+         * add new car into localStorage
+         * trough $resource
+         */
+        $scope.addCar = function() {
+
+        };
     }]);
