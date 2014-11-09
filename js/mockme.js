@@ -2,6 +2,14 @@
 (function() {
   var mockme = angular.module('MockMe', ['ngMockE2E']);
 
+  function showErrorMessageAndReloadBrowser() {
+    var errorMessage = "Persistent Storage maximum size reached. This is just a demo.";
+    errorMessage += "\nPlease use small pictures.";
+    alert(errorMessage);
+    localStorage.clear();
+    window.location.reload(true);
+  }
+
   mockme.provider('MockMe', [function() {
     return {
       mappings: [],
@@ -31,7 +39,11 @@
         json = JSON.parse(localStorage[mappingUrl]);
       } else {
         json = mapping.json;
-        localStorage[mappingUrl] = JSON.stringify(json);
+        try {
+          localStorage[mappingUrl] = JSON.stringify(json);
+        } catch (ex) {
+            showErrorMessageAndReloadBrowser();
+        }
       }
 
       var idRe = new RegExp(mappingUrl + '\\?id=([0-9]+)');
@@ -68,7 +80,11 @@
         } while (_.find(json, compare));
 
         json.push(item);
-        localStorage[mappingUrl] = JSON.stringify(json);
+        try {
+          localStorage[mappingUrl] = JSON.stringify(json);
+        } catch (ex) {
+          showErrorMessageAndReloadBrowser();
+        }
 
         return [200, item];
       });
@@ -86,7 +102,11 @@
         }
 
         json = _.without(json, instance);
-        localStorage[mappingUrl] = JSON.stringify(json);
+        try {
+          localStorage[mappingUrl] = JSON.stringify(json);
+        } catch (ex) {
+          showErrorMessageAndReloadBrowser();
+        }
 
         return [200, {'message': 'Deleted'}];
       });
@@ -105,7 +125,11 @@
         }
 
         instance = _.extend(instance, updates, {id: instance.id});
-        localStorage[mappingUrl] = JSON.stringify(json);
+        try {
+          localStorage[mappingUrl] = JSON.stringify(json);
+        } catch (ex) {
+          showErrorMessageAndReloadBrowser();
+        }
 
         return [200, {'message': 'Ok'}];
       });

@@ -18,5 +18,30 @@
         <label for="modelOfCar">Model</label>
         <input required="required" data-ng-model="car.modelOfCar" type="text" class="form-control" id="modelOfCar" placeholder="Enter model of the car">
     </div>
+    <div class="form-group">
+        <label>In stock</label>
+        <div class="radio">
+            <label>
+                <input type="radio" name="inStock" value="Yes" ng-model="car.inStock">
+                Yes
+            </label>
+        </div>
+        <div class="radio">
+            <label>
+                <input type="radio" name="inStock" value="No" ng-model="car.inStock">
+                No
+            </label>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="licensePlate">License plate (format X(X) NNNN Y(Y))</label>
+        <input required="required" pattern="[А-Я]{1,2} [0-9]{4} [А-Я]{1,2}" data-ng-model="car.licensePlate" type="text" class="form-control" id="licensePlate" placeholder="Enter license plate of the car">
+    </div>
+    <div class="form-group">
+        <label for="address">Address</label>
+        <input required="required"  data-ng-model="car.address" type="text" class="form-control" id="address" placeholder="Enter current location of the car">
+        {{errorMessage}}
+        <input type="button" data-ng-click="getGeolocation(car.address)" class="btn btn-info" value="Get geolocation from google service">
+    </div>
     <button type="submit" class="btn btn-primary">Add car</button>
 </form>

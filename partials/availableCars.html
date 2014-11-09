@@ -1,25 +1,42 @@
-<table class="table table-striped" data-ng-show="carlist.length > 0">
+<div data-ng-show="carlist.length > 0">
+    [ <a href="" ng-click="predicate=''">unsorted</a> ]
+<table class="table table-striped">
     <caption>List of cars</caption>
     <thead>
         <tr>
             <td>
-                Car manufacturer
+                <a href="" ng-click="predicate = 'manufacturer'; reverse=false">
+                   Car manufacturer
+                </a>
+                (<a href="" ng-click="predicate = '-manufacturer'; reverse=false">^</a>)
             </td>
             <td>
+                <a href="" ng-click="predicate = 'modelOfCar'; reverse=false">
                 Model
+                </a>
+                (<a href="" ng-click="predicate = '-modelOfCar'; reverse=false">^</a>)
             </td>
             <td>
-
+                <a href="" ng-click="predicate = 'inStock'; reverse=false">
+                In stock
+                </a>
+                (<a href="" ng-click="predicate = '-inStock'; reverse=false">^</a>)
+            </td>
+            <td>
+                Delete
             </td>
         </tr>
     </thead>
     <tbody>
-        <tr data-ng-repeat="car in carlist">
+        <tr data-ng-repeat="car in carlist | orderBy:predicate:reverse"">
             <td>
                 {{car.manufacturer}}
             </td>
             <td>
                 {{car.modelOfCar}}
+            </td>
+            <td>
+                {{car.inStock}}
             </td>
             <td>
                 <a href="javascript:void 0;" data-ng-click="removeCar(car.id)">
@@ -31,6 +48,7 @@
         </tr>
     </tbody>
 </table>
+</div>
 <div data-ng-show="carlist.length == 0">
   There is no cars in the system. Please use tab Add car.
 </div>

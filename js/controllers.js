@@ -13,9 +13,15 @@ carDealerShipAppControllers.controller('HomeCtrl', ['$scope',
     }]);
 
 
-carDealerShipAppControllers.controller('AvailableCarsCtrl', ['$scope', 'Car',
-    function ($scope, Car) {
+carDealerShipAppControllers.controller('AvailableCarsCtrl', ['$scope', 'Car', '$filter',
+    function ($scope, Car, $filter) {
+        var orderBy = $filter('orderBy');
+
         $scope.name = 'AvailableCarsCtrl';
+
+        $scope.order = function(predicate, reverse) {
+            $scope.carlist = orderBy($scope.carlist, predicate, reverse);
+        };
 
         function showCarsList() {
             Car.query().$promise.then(function (carList) {
@@ -24,6 +30,8 @@ carDealerShipAppControllers.controller('AvailableCarsCtrl', ['$scope', 'Car',
         }
 
         showCarsList();
+
+        $scope.predicate = '-manufacturer';
 
         $scope.removeCar = function (carId) {
             Car.delete({id: carId}).$promise.then(
@@ -44,9 +52,22 @@ carDealerShipAppControllers.controller('ContactCtrl', ['$scope',
         $scope.name = 'ContactCtrl';
     }]);
 
-carDealerShipAppControllers.controller('AdministrationCtrl', ['$scope', 'Car', '$modal',
-    function ($scope, Car, $modal) {
+carDealerShipAppControllers.controller('AdministrationCtrl', ['$scope', 'Car', '$modal', 'GetGeoLocation',
+    function ($scope, Car, $modal, GetGeoLocation) {
         $scope.name = 'AdministrationCtrl';
+
+        $scope.car = {
+            inStock: "Yes"
+        };
+
+        $scope.getGeolocation = function(address) {
+            GetGeoLocation(address).then(function(result) {
+                /**
+                 * here we will working with
+                 * received geolocation
+                 */
+            });
+        };
 
         $scope.today = function() {
             $scope.dt = new Date();
@@ -65,10 +86,9 @@ carDealerShipAppControllers.controller('AdministrationCtrl', ['$scope', 'Car', '
             };
 
             var newCar = new Car();
-            newCar.manufacturer = $scope.car.manufacturer;
-            newCar.carPiture = $scope.car.carPiture;
-            newCar.modelOfCar = $scope.car.modelOfCar;
+            angular.extend(newCar, $scope.car);
             newCar.productionDate = $scope.dt.getTime();
+
             newCar.$save().then(function (result) {
                 $modal.open({
                     templateUrl: 'partials/modalSuccessContent.html',
@@ -110,6 +130,5 @@ carDealerShipAppControllers.controller('AdministrationCtrl', ['$scope', 'Car', '
             startingDay: 1
         };
 
-        $scope.formats = ['dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'];
-        $scope.format = $scope.formats[0];
+        $scope.format = 'dd-MMMM-yyyy';
     }]);
