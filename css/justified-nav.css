@@ -131,3 +131,18 @@ body {
 .listSmallImage {
     max-height: 40px !important;
 }
+
+.nativeErrorHolder {
+    background-color: transparent !important;
+    border: 0px !important;
+    outline: none !important;
+    -webkit-box-shadow: none !important;
+    -moz-box-shadow: none !important;
+    box-shadow: none !important;
+    width: 1px !important;
+    height: 1px !important;
+    color: transparent !important;
+    cursor: default !important;
+    float: left;
+    clear: both;
+}

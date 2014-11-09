@@ -4,7 +4,7 @@ var carDealerShipAppControllers = angular.module('carDealerShipAppControllers', 
 
 carDealerShipAppControllers.controller('MainController', function($scope, $route) {
     $scope.$route = $route;
-})
+});
 
 carDealerShipAppControllers.controller('HomeCtrl', ['$scope',
     function ($scope) {
@@ -60,12 +60,26 @@ carDealerShipAppControllers.controller('AdministrationCtrl', ['$scope', 'Car', '
             inStock: "Yes"
         };
 
+        $scope.closeAlert = function(obj) {
+            if(angular.isDefined($scope[obj])) {
+                delete $scope[obj];
+            }
+        }
+
         $scope.getGeolocation = function(address) {
+            if(angular.isDefined($scope.errorMessage)) {
+                delete $scope.errorMessage;
+            }
+
             GetGeoLocation(address).then(function(result) {
                 /**
                  * here we will working with
                  * received geolocation
                  */
+                $scope.geolocation = result;
+                $scope.geoLocationMsg = angular.copy(result);
+            }).catch(function(error) {
+                $scope.errorMessage = error;
             });
         };
 
@@ -101,6 +115,14 @@ carDealerShipAppControllers.controller('AdministrationCtrl', ['$scope', 'Car', '
                          */
                         $("#carPiture").val("");
                         $scope.today();
+                        if(angular.isDefined($scope.geolocation)) {
+                            delete $scope.geolocation;
+                        }
+
+                        if(angular.isDefined($scope.geoLocationMsg)) {
+                            delete $scope.geoLocationMsg;
+                        }
+
                         resultModalCtrl = null;
                     });
             });

@@ -40,8 +40,15 @@
     <div class="form-group">
         <label for="address">Address</label>
         <input required="required"  data-ng-model="car.address" type="text" class="form-control" id="address" placeholder="Enter current location of the car">
-        {{errorMessage}}
+        <alert data-ng-if="errorMessage" type="'danger'" close="closeAlert('errorMessage')">
+            {{errorMessage}}
+        </alert>
         <input type="button" data-ng-click="getGeolocation(car.address)" class="btn btn-info" value="Get geolocation from google service">
+        <br>
+        <input type="text" class="nativeErrorHolder" data-show-error-message data-track="geolocation"/>
+        <alert data-ng-if="geoLocationMsg" type="'success'" close="closeAlert('geoLocationMsg')">
+                Car latitude is {{geoLocationMsg.lat}} car longtutide is {{geoLocationMsg.lng}}.
+        </alert>
     </div>
     <button type="submit" class="btn btn-primary">Add car</button>
 </form>

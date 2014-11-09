@@ -31,3 +31,20 @@ carDealerShipApp.directive('fileToScopeString', function() {
         }
     }
 });
+
+carDealerShipApp.directive("showErrorMessage", function () {
+    return {
+        scope: {
+            track: "&"
+        },
+        link: function (scope, iElement) {
+            scope.$watch(scope.track, function (value) {
+                if (angular.isDefined(value) == false) {
+                    iElement.get(0).setCustomValidity("You must get geolocation of the car!");
+                } else {
+                    iElement.get(0).setCustomValidity("");
+                }
+            });
+        }
+    }
+});
