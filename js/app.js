@@ -8,8 +8,10 @@ var carDealerShipApp = angular.module('carDealerShipApp', [
     'carDealerShipAppServices'
 ]);
 
-carDealerShipApp.config(['$routeProvider',
-    function ($routeProvider) {
+carDealerShipApp.config(['$routeProvider', '$compileProvider',
+    function ($routeProvider, $compileProvider) {
+        $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|ftp|file|blob):|data:image\//);
+
         $routeProvider.
             when('/home', {
                 templateUrl: 'partials/home.html',

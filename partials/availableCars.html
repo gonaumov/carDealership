@@ -1,8 +1,12 @@
-<table class="table table-striped">
+<table class="table table-striped" data-ng-show="carlist.length > 0">
+    <caption>List of cars</caption>
     <thead>
         <tr>
             <td>
                 Car manufacturer
+            </td>
+            <td>
+                Model
             </td>
             <td>
 
@@ -15,6 +19,9 @@
                 {{car.manufacturer}}
             </td>
             <td>
+                {{car.modelOfCar}}
+            </td>
+            <td>
                 <a href="javascript:void 0;" data-ng-click="removeCar(car.id)">
                     <span class="glyphicon glyphicon-remove">
 
@@ -24,3 +31,6 @@
         </tr>
     </tbody>
 </table>
+<div data-ng-show="carlist.length == 0">
+  There is no cars in the system. Please use tab Add car.
+</div>

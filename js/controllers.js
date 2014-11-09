@@ -48,6 +48,10 @@ carDealerShipAppControllers.controller('AdministrationCtrl', ['$scope', 'Car', '
     function ($scope, Car, $modal) {
         $scope.name = 'AdministrationCtrl';
 
+        $scope.today = function() {
+            $scope.dt = new Date();
+        };
+
         /**
          * In this mettod we will
          * add new car into localStorage
@@ -61,16 +65,51 @@ carDealerShipAppControllers.controller('AdministrationCtrl', ['$scope', 'Car', '
             };
 
             var newCar = new Car();
-            newCar.manufacturer = $scope.manufacturer;
+            newCar.manufacturer = $scope.car.manufacturer;
+            newCar.carPiture = $scope.car.carPiture;
+            newCar.modelOfCar = $scope.car.modelOfCar;
+            newCar.productionDate = $scope.dt.getTime();
             newCar.$save().then(function (result) {
                 $modal.open({
                     templateUrl: 'partials/modalSuccessContent.html',
                     controller: resultModalCtrl,
                     size: 'sm'
                 }).result.then(function() {
-                        delete $scope.manufacturer;
+                        delete $scope.car;
+                        /**
+                         * small dirty hack ..
+                         */
+                        $("#carPiture").val("");
+                        $scope.today();
                         resultModalCtrl = null;
                     });
             });
         };
+
+        $scope.today();
+
+        $scope.clear = function () {
+            $scope.dt = null;
+        };
+
+        $scope.toggleMin = function() {
+            $scope.minDate = $scope.minDate ? null : new Date();
+        };
+
+        $scope.toggleMin();
+
+        $scope.open = function($event) {
+            $event.preventDefault();
+            $event.stopPropagation();
+
+            $scope.opened = true;
+        };
+
+        $scope.dateOptions = {
+            formatYear: 'yy',
+            startingDay: 1
+        };
+
+        $scope.formats = ['dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'];
+        $scope.format = $scope.formats[0];
     }]);
