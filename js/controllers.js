@@ -52,8 +52,15 @@ carDealerShipAppControllers.controller('ContactCtrl', ['$scope',
         $scope.name = 'ContactCtrl';
     }]);
 
-carDealerShipAppControllers.controller('AdministrationCtrl', ['$scope', 'Car', '$modal', 'GetGeoLocation',
-    function ($scope, Car, $modal, GetGeoLocation) {
+carDealerShipAppControllers.controller('CarDetailsController', ['$scope', '$routeParams', 'Car',
+    function ($scope, $routeParams, Car) {
+        Car.get({id: $routeParams.carId}).$promise.then(function(result) {
+            $scope.car = result;
+        });
+    }]);
+
+carDealerShipAppControllers.controller('AdministrationCtrl', ['$scope', 'Car', '$modal', 'GetGeoLocation', '$location',
+    function ($scope, Car, $modal, GetGeoLocation, $location) {
         $scope.name = 'AdministrationCtrl';
 
         $scope.car = {
@@ -95,20 +102,24 @@ carDealerShipAppControllers.controller('AdministrationCtrl', ['$scope', 'Car', '
         $scope.addCar = function () {
             var resultModalCtrl = function ($scope, $modalInstance) {
                 $scope.ok = function () {
-                    $modalInstance.close();
+                    $modalInstance.close("ok");
                 };
+
+                $scope.carList = function() {
+                    $modalInstance.close("carlist");
+                }
             };
 
             var newCar = new Car();
             angular.extend(newCar, $scope.car);
             newCar.productionDate = $scope.dt.getTime();
 
-            newCar.$save().then(function (result) {
+            newCar.$save().then(function () {
                 $modal.open({
                     templateUrl: 'partials/modalSuccessContent.html',
                     controller: resultModalCtrl,
                     size: 'sm'
-                }).result.then(function() {
+                }).result.then(function(result) {
                         delete $scope.car;
                         /**
                          * small dirty hack ..
@@ -128,6 +139,10 @@ carDealerShipAppControllers.controller('AdministrationCtrl', ['$scope', 'Car', '
                         };
 
                         window.scrollTo(0, 0);
+
+                        if(result == "carlist") {
+                            $location.path("/availableCars");
+                        }
                     });
             });
         };

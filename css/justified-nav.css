@@ -128,8 +128,9 @@ body {
     left:-100%;
 }
 
-.listSmallImage {
-    max-height: 40px !important;
+.carDetailsImage {
+    max-height: 200px !important;
+    border: 1px solid #000000;
 }
 
 .nativeErrorHolder {
