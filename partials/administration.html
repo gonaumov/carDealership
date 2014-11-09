@@ -35,7 +35,7 @@
     </div>
     <div class="form-group">
         <label for="licensePlate">License plate (format X(X) NNNN Y(Y))</label>
-        <input required="required" pattern="[А-Я]{1,2} [0-9]{4} [А-Я]{1,2}" data-ng-model="car.licensePlate" type="text" class="form-control" id="licensePlate" placeholder="Enter license plate of the car">
+        <input required="required" pattern="[А-ЯA-Z]{1,2} [0-9]{4} [А-ЯA-Z]{1,2}" data-ng-model="car.licensePlate" type="text" class="form-control" id="licensePlate" placeholder="Enter license plate of the car">
     </div>
     <div class="form-group">
         <label for="address">Address</label>
@@ -45,10 +45,14 @@
         </alert>
         <input type="button" data-ng-click="getGeolocation(car.address)" class="btn btn-info" value="Get geolocation from google service">
         <br>
-        <input type="text" class="nativeErrorHolder" data-show-error-message data-track="geolocation"/>
+        <input type="text" class="nativeErrorHolder" data-show-error-message data-track="car.geolocation"/>
         <alert data-ng-if="geoLocationMsg" type="'success'" close="closeAlert('geoLocationMsg')">
                 Car latitude is {{geoLocationMsg.lat}} car longtutide is {{geoLocationMsg.lng}}.
         </alert>
     </div>
     <button type="submit" class="btn btn-primary">Add car</button>
+    <div class="form-group" data-ng-show="car.geolocation">
+        Location of the car on the map.
+        <div style="height: 300px;" id="map-canvas" data-show-google-map data-geocode="car.geolocation"></div>
+    </div>
 </form>

@@ -23,6 +23,7 @@ carDealerShipAppServices.factory('GetGeoLocation', ['$q',
             geocoder.geocode({'address': address}, function(results, status) {
                 if (status == google.maps.GeocoderStatus.OK) {
                     deferred.resolve({
+                        address: address,
                         lat: results[0].geometry.location.lat(),
                         lng: results[0].geometry.location.lng()
                     });

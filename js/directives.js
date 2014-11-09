@@ -48,3 +48,40 @@ carDealerShipApp.directive("showErrorMessage", function () {
         }
     }
 });
+
+carDealerShipApp.directive("showGoogleMap", function () {
+    return {
+        scope: {
+            geocode: "&"
+        },
+        link: function (scope, iElement) {
+            scope.$watch(scope.geocode, (function (map) {
+                return function (value) {
+                    if (angular.isDefined(value)) {
+                        var location = new google.maps.LatLng(value.lat, value.lng);
+
+                        if (angular.isUndefined(map)) {
+                            map = new google.maps.Map(iElement.get(0), {
+                                center: location,
+                                zoom: 12
+                            });
+                        }
+
+                        map.setCenter(location);
+
+                        var marker = new google.maps.Marker({
+                            map: map,
+                            position: location,
+                            title: value.address
+                        });
+
+                        map.setZoom(16);
+                    } else {
+                        iElement.empty();
+                        map = undefined;
+                    }
+                }
+            })());
+        }
+    }
+});

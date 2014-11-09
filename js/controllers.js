@@ -76,7 +76,7 @@ carDealerShipAppControllers.controller('AdministrationCtrl', ['$scope', 'Car', '
                  * here we will working with
                  * received geolocation
                  */
-                $scope.geolocation = result;
+                $scope.car.geolocation = result;
                 $scope.geoLocationMsg = angular.copy(result);
             }).catch(function(error) {
                 $scope.errorMessage = error;
@@ -114,16 +114,20 @@ carDealerShipAppControllers.controller('AdministrationCtrl', ['$scope', 'Car', '
                          * small dirty hack ..
                          */
                         $("#carPiture").val("");
+
                         $scope.today();
-                        if(angular.isDefined($scope.geolocation)) {
-                            delete $scope.geolocation;
-                        }
 
                         if(angular.isDefined($scope.geoLocationMsg)) {
                             delete $scope.geoLocationMsg;
                         }
 
                         resultModalCtrl = null;
+
+                        $scope.car = {
+                            inStock: "Yes"
+                        };
+
+                        window.scrollTo(0, 0);
                     });
             });
         };
