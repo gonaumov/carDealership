@@ -59,6 +59,101 @@ carDealerShipAppControllers.controller('CarDetailsController', ['$scope', '$rout
         });
     }]);
 
+/**
+ * EditCarController and AdministrationCtrl
+ * are very similar. 
+ */
+carDealerShipAppControllers.controller('EditCarController', ['$scope', 'Car', '$modal', 'GetGeoLocation', '$location', '$routeParams',
+    function ($scope, Car, $modal, GetGeoLocation, $location, $routeParams) {
+        $scope.closeAlert = function(obj) {
+            if(angular.isDefined($scope[obj])) {
+                delete $scope[obj];
+            }
+        };
+
+        /**
+         * In this mettod we will
+         * update selected car into localStorage
+         * trough $resource
+         */
+        $scope.saveCar = function () {
+            var resultModalCtrl = function ($scope, $modalInstance) {
+                $scope.ok = function () {
+                    $modalInstance.close("ok");
+                };
+
+                $scope.carList = function() {
+                    $modalInstance.close("carlist");
+                }
+            };
+
+            $scope.car.productionDate = $scope.dt;
+
+            Car.update({id: $scope.car.id}, $scope.car).$promise.then(function () {
+                $modal.open({
+                    templateUrl: 'partials/modalEditSuccessContent.html',
+                    controller: resultModalCtrl,
+                    size: 'sm'
+                }).result.then(function(result) {
+                        resultModalCtrl = null;
+                        window.scrollTo(0, 0);
+                        $location.path("/availableCars");
+                    });
+            });
+        };
+
+        $scope.getGeolocation = function(address) {
+            if(angular.isDefined($scope.errorMessage)) {
+                delete $scope.errorMessage;
+            }
+
+            GetGeoLocation(address).then(function(result) {
+                /**
+                 * here we will working with
+                 * received geolocation
+                 */
+                $scope.car.geolocation = result;
+                $scope.geoLocationMsg = angular.copy(result);
+            }).catch(function(error) {
+                $scope.errorMessage = error;
+            });
+        };
+
+        $scope.today = function() {
+            $scope.dt = new Date();
+        };
+
+        $scope.clear = function () {
+            $scope.dt = null;
+        };
+
+        $scope.toggleMin = function() {
+            $scope.minDate = $scope.minDate ? null : new Date();
+        };
+
+        $scope.toggleMin();
+
+        $scope.open = function($event) {
+            $event.preventDefault();
+            $event.stopPropagation();
+
+            $scope.opened = true;
+        };
+
+        $scope.dateOptions = {
+            formatYear: 'yy',
+            startingDay: 1
+        };
+
+        $scope.format = 'dd-MMMM-yyyy';
+
+        Car.get({id: $routeParams.carId}).$promise.then(function(result) {
+            $scope.car = result;
+
+            $scope.dt = ((new Date()).setTime(result.productionDate));
+        });
+    }]);
+
 carDealerShipAppControllers.controller('AdministrationCtrl', ['$scope', 'Car', '$modal', 'GetGeoLocation', '$location',
     function ($scope, Car, $modal, GetGeoLocation, $location) {
         $scope.name = 'AdministrationCtrl';
@@ -99,7 +194,7 @@ carDealerShipAppControllers.controller('AdministrationCtrl', ['$scope', 'Car', '
          * add new car into localStorage
          * trough $resource
          */
-        $scope.addCar = function () {
+        $scope.saveCar = function () {
             var resultModalCtrl = function ($scope, $modalInstance) {
                 $scope.ok = function () {
                     $modalInstance.close("ok");

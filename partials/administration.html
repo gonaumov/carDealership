@@ -1,4 +1,4 @@
-<form role="form" data-ng-submit="addCar()">
+<form role="form" data-ng-submit="saveCar()">
     <div class="form-group">
         <label for="productionDate">Production date</label>
         <input id="productionDate" type="text" class="form-control" datepicker-popup="{{format}}" ng-model="dt" is-open="opened" min-date="minDate" max-date="'2015-06-22'" datepicker-options="dateOptions" ng-required="true" close-text="Close" />
@@ -8,7 +8,10 @@
     </div>
     <div class="form-group">
         <label for="carPiture">Car picture</label>
-        <input accept="image/*" required="required" data-file-to-scope-string="car.carPiture" type="file" class="form-control" id="carPiture" placeholder="Provide picture of the car">
+        <input accept="image/*" data-ng-required="$route.current.scope.name == 'AdministrationCtrl'" data-file-to-scope-string="car.carPiture" data-track="car.carPiture" type="file" class="form-control" id="carPiture" placeholder="Provide picture of the car">
+    </div>
+    <div class="form-group" data-ng-if="car.carPiture">
+        <img data-ng-if="car.carPiture" data-ng-src="{{car.carPiture}}" class="carDetailsImage"/>
     </div>
     <div class="form-group">
         <label for="manufacturer">Manufacturer</label>
@@ -50,7 +53,7 @@
                 Car latitude is {{geoLocationMsg.lat}} car longtutide is {{geoLocationMsg.lng}}.
         </alert>
     </div>
-    <button type="submit" class="btn btn-primary">Add car</button>
+    <button type="submit" class="btn btn-primary">Save car</button>
     <div class="form-group" data-ng-show="car.geolocation">
         Location of the car on the map.
         <div style="height: 300px;" id="map-canvas" data-show-google-map data-geocode="car.geolocation"></div>

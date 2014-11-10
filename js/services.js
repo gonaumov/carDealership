@@ -6,7 +6,9 @@ var carDealerShipAppServices = angular.module('carDealerShipAppServices', ['ngRe
 
 carDealerShipAppServices.factory('Car', ['$resource',
     function($resource){
-        return $resource('/cars/:carId', {}, {});
+        return $resource('/cars/:carId', {}, {
+            'update': { method:'PUT' }
+        });
     }]);
 
 

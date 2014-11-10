@@ -25,6 +25,10 @@ carDealerShipApp.config(['$routeProvider', '$compileProvider',
                 templateUrl: 'partials/cardetails.html',
                 controller: 'CarDetailsController'
             }).
+            when('/editcar/:carId', {
+                templateUrl: 'partials/administration.html',
+                controller: 'EditCarController'
+            }).
             when('/services', {
                 templateUrl: 'partials/services.html',
                 controller: 'ServicesCtrl'

@@ -7,6 +7,7 @@
     errorMessage += "\nPlease use small pictures.";
     alert(errorMessage);
     localStorage.clear();
+    window.scrollTo(0, 0);
     window.location.reload(true);
   }
 
