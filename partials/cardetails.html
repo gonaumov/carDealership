@@ -1,0 +1,27 @@
+<a href="#/availableCars" class="btn btn-primary">Available cars list</a>
+<dl class="dl-horizontal">
+    <dt>Production date</dt>
+    <dd>{{car.productionDate | date:'dd-MMMM-yyyy'}}</dd>
+    <dt>Picture</dt>
+    <dd>
+        <img data-ng-src="{{car.carPiture}}" class="carDetailsImage">
+    </dd>
+    <dt>Manufacturer</dt>
+    <dd>{{car.manufacturer}}</dd>
+    <dt>Model</dt>
+    <dd>{{car.modelOfCar}}</dd>
+    <dt>In stock</dt>
+    <dd>{{car.inStock}}</dd>
+    <dt>License plate</dt>
+    <dd>{{car.licensePlate}}</dd>
+    <dt>Address</dt>
+    <dd>{{car.address}}</dd>
+    <dt>Latitude</dt>
+    <dd>{{car.geolocation.lat}}</dd>
+    <dt>Longtitude</dt>
+    <dd>{{car.geolocation.lng}}</dd>
+    <dt>Location of the car on the map</dt>
+    <dd>
+        <div style="height: 300px;" id="map-canvas" data-show-google-map data-geocode="car.geolocation"></div>
+    </dd>
+</dl>
